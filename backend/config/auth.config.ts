@@ -7,21 +7,20 @@ import { BETTER_AUTH_URL, APP_URL, sendEmail } from '~/libs'
 
 export const auth = betterAuth({
   database: prismaAdapter(DB, {
-    provider: 'pg',
+    provider: 'postgresql',
   }),
   baseURL: BETTER_AUTH_URL,
   trustedOrigins: [APP_URL],
   user: {
-    modelName: 'users',
+    // modelName: 'user' (default)
     additionalFields: {
       phone: { type: 'string', nullable: true, returned: true },
-      isAdmin: { type: 'boolean', default: false, returned: true },
+      isAdmin: { type: 'boolean', default: false, returned: true, input: false },
     },
     changeEmail: {
       enabled: true,
       sendChangeEmailVerification: async ({ user, newEmail, url, token }) => {
-        // Send change email verification
-        sendEmail({
+        await sendEmail({
           to: newEmail,
           subject: 'Verify your new email',
           text: `Click the link to verify your new email: ${url}`,
@@ -29,61 +28,38 @@ export const auth = betterAuth({
       },
     },
   },
-  session: { modelName: 'sessions' },
+  session: {
+    // modelName: 'session' (default)
+    expiresIn: 60 * 60 * 24 * 7, // 1 week
+    updateAge: 60 * 60 * 24, // 1 day
+  },
   account: {
-    modelName: 'accounts',
+    // modelName: 'account' (default)
     accountLinking: {
       enabled: true,
       trustedProviders: ['github', 'google', 'email-password'],
-      allowDifferentEmails: false,
-      sendAccountLinkingEmail: async ({ user, url, token }) => {
-        // Send account linking email
-        sendEmail({
-          to: user.email,
-          subject: 'Link your account',
-          text: `Click the link to confirm linking your account: ${url}`,
-        })
-      },
+      allowDifferentEmails: true, // Allow linking accounts with different emails if verified
     },
   },
   emailAndPassword: {
     enabled: true,
-    disableSignUp: false, // Enable/Disable sign up
-    minPasswordLength: 8,
-    maxPasswordLength: 128,
-    autoSignIn: true,
-    // Password hashing configuration
-    password: {
-      hash: async password => {
-        return await Bun.password.hash(password, {
-          algorithm: 'bcrypt',
-          cost: 10,
-        })
-      },
-      verify: async ({ password, hash }) => {
-        return await Bun.password.verify(password, hash)
-      },
-    },
-    // Email verification configuration
-    requireEmailVerification: false,
+    requireEmailVerification: true, // Enabled as requested
     emailVerification: {
+      sendOnSignUp: true,
+      autoSignInAfterVerification: true,
       sendVerificationEmail: async ({ user, url, token }) => {
         await sendEmail({
           to: user.email,
           subject: 'Verify your email',
-          text: `Click the link to verify your email: ${url}`,
+          text: `Click the link to verify your email address: ${url}`,
         })
       },
-      sendOnSignUp: true,
-      autoSignInAfterVerification: true,
-      expiresIn: 3600, // 1 hour
     },
-    // Password reset configuration
-    sendResetPassword: async ({ user, url, token }, request) => {
+    sendResetPassword: async ({ user, url, token }) => {
       await sendEmail({
         to: user.email,
         subject: 'Reset your password',
-        text: `Click the link to reset your password: ${url}`,
+        text: `Click the link to reset your password: ${url}. If you didn't request this, ignore this email.`,
       })
     },
   },
@@ -93,19 +69,19 @@ export const auth = betterAuth({
         await sendEmail({
           to: email,
           subject: 'Sign in to your account',
-          text: `Click the link to sign in to your account: ${url}`,
+          text: `Click the link to sign in: ${url}`,
         })
       },
     }),
   ],
   socialProviders: {
     github: {
-      clientId: process.env.GITHUB_CLIENT_ID as string,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+      clientId: process.env.GITHUB_CLIENT_ID || '',
+      clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
     },
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      clientId: process.env.GOOGLE_CLIENT_ID || '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
     },
   },
 })

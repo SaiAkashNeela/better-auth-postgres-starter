@@ -4,20 +4,22 @@
     "": {
       "name": "bun-hono-nwe",
       "dependencies": {
-        "@prisma/adapter-pg": "^6.1.0",
-        "@prisma/client": "^6.1.0",
-        "axios": "^1.8.4",
-        "better-auth": "^1.2.7",
-        "dotenv": "^16.5.0",
-        "hono": "^4.7.7",
-        "pg": "^8.14.1",
+        "@prisma/adapter-pg": "^6.19.2",
+        "@prisma/client": "^6.19.2",
+        "axios": "^1.13.4",
+        "better-auth": "^1.4.18",
+        "dotenv": "^16.6.1",
+        "hono": "^4.11.7",
+        "nodemailer": "^7.0.13",
+        "pg": "^8.18.0",
       },
       "devDependencies": {
         "@types/bun": "latest",
         "@types/node": "^25.2.0",
-        "@types/pg": "^8.11.13",
-        "prisma": "^6.1.0",
-        "tsx": "^4.19.3",
+        "@types/nodemailer": "^7.0.9",
+        "@types/pg": "^8.16.0",
+        "prisma": "^6.19.2",
+        "tsx": "^4.21.0",
       },
     },
   },
@@ -109,6 +111,8 @@
     "@types/bun": ["@types/bun@1.3.8", "", { "dependencies": { "bun-types": "1.3.8" } }, "sha512-3LvWJ2q5GerAXYxO2mffLTqOzEu5qnhEAlh48Vnu8WQfnmSwbgagjGZV6BoHKJztENYEDn6QmVd949W4uESRJA=="],
 
     "@types/node": ["@types/node@25.2.0", "", { "dependencies": { "undici-types": "~7.16.0" } }, "sha512-DZ8VwRFUNzuqJ5khrvwMXHmvPe+zGayJhr2CDNiKB1WBE1ST8Djl00D0IC4vvNmHMdj6DlbYRIaFE7WHjlDl5w=="],
+
+    "@types/nodemailer": ["@types/nodemailer@7.0.9", "", { "dependencies": { "@types/node": "*" } }, "sha512-vI8oF1M+8JvQhsId0Pc38BdUP2evenIIys7c7p+9OZXSPOH5c1dyINP1jT8xQ2xPuBUXmIC87s+91IZMDjH8Ow=="],
 
     "@types/pg": ["@types/pg@8.16.0", "", { "dependencies": { "@types/node": "*", "pg-protocol": "*", "pg-types": "^2.2.0" } }, "sha512-RmhMd/wD+CF8Dfo+cVIy3RR5cl8CyfXQ0tGgW6XBL8L4LM/UTEbNXYRbLwU6w+CgrKBNbrQWt4FUtTfaU5jSYQ=="],
 
@@ -207,6 +211,8 @@
     "nanostores": ["nanostores@1.1.0", "", {}, "sha512-yJBmDJr18xy47dbNVlHcgdPrulSn1nhSE6Ns9vTG+Nx9VPT6iV1MD6aQFp/t52zpf82FhLLTXAXr30NuCnxvwA=="],
 
     "node-fetch-native": ["node-fetch-native@1.6.7", "", {}, "sha512-g9yhqoedzIUm0nTnTqAQvueMPVOuIY16bqgAJJC8XOOubYFNwz6IER9qs0Gq2Xd0+CecCKFjtdDTMA4u4xG06Q=="],
+
+    "nodemailer": ["nodemailer@7.0.13", "", {}, "sha512-PNDFSJdP+KFgdsG3ZzMXCgquO7I6McjY2vlqILjtJd0hy8wEvtugS9xKRF2NWlPNGxvLCXlTNIae4serI7dinw=="],
 
     "nypm": ["nypm@0.6.4", "", { "dependencies": { "citty": "^0.2.0", "pathe": "^2.0.3", "tinyexec": "^1.0.2" }, "bin": { "nypm": "dist/cli.mjs" } }, "sha512-1TvCKjZyyklN+JJj2TS3P4uSQEInrM/HkkuSXsEzm1ApPgBffOn8gFguNnZf07r/1X6vlryfIqMUkJKQMzlZiw=="],
 
