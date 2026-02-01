@@ -1,12 +1,12 @@
 import { betterAuth } from 'better-auth'
-import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { magicLink } from 'better-auth/plugins'
 import { DB } from '.'
 //
 import { BETTER_AUTH_URL, APP_URL, sendEmail } from '~/libs'
 
 export const auth = betterAuth({
-  database: drizzleAdapter(DB, {
+  database: prismaAdapter(DB, {
     provider: 'pg',
   }),
   baseURL: BETTER_AUTH_URL,

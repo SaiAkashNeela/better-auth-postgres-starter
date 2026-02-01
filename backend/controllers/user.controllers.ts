@@ -1,7 +1,5 @@
 import { Context } from 'hono'
 import { DB } from '~/config'
-import { eq, and, sql } from 'drizzle-orm'
-import * as schema from '~/config/db/schema/auth-schema'
 
 /**
  * @api {get} /users Get All Users
@@ -9,7 +7,7 @@ import * as schema from '~/config/db/schema/auth-schema'
  * @access Private
  */
 export const getUsers = async (c: Context) => {
-  const users = await DB.select().from(schema.users)
+  const users = await DB.user.findMany()
   return c.json(users)
 }
 
@@ -21,11 +19,9 @@ export const getUsers = async (c: Context) => {
 export const getUserById = async (c: Context) => {
   const id = c.req.param('id')
 
-  const user = await DB.select()
-    .from(schema.users)
-    .where(eq(schema.users.id, id))
-    .limit(1)
-    .then(users => users[0])
+  const user = await DB.user.findUnique({
+    where: { id },
+  })
 
   if (!user) {
     return c.json(
@@ -52,7 +48,7 @@ export const editProfile = async (c: Context) => {
     const body = await c.req.json()
 
     // Create an object to hold our updates
-    const updates: Partial<typeof schema.users.$inferInsert> = {}
+    const updates: any = {}
 
     // Only add fields to the update if they exist in the request body
     if (body.name !== undefined && body.name !== '') {
@@ -77,9 +73,6 @@ export const editProfile = async (c: Context) => {
       updates.image = body.image.trim()
     }
 
-    // Add updatedAt timestamp
-    updates.updatedAt = new Date()
-
     // If no fields were provided, return early
     if (Object.keys(updates).length === 0) {
       return c.json(
@@ -92,21 +85,10 @@ export const editProfile = async (c: Context) => {
     }
 
     // Update the user's profile with only the provided fields
-    const updatedUser = await DB.update(schema.users)
-      .set(updates)
-      .where(eq(schema.users.id, user.id))
-      .returning()
-      .then(users => users[0])
-
-    if (!updatedUser) {
-      return c.json(
-        {
-          success: false,
-          message: 'User not found or update failed',
-        },
-        404
-      )
-    }
+    const updatedUser = await DB.user.update({
+      where: { id: user.id },
+      data: updates,
+    })
 
     return c.json({
       success: true,
@@ -134,11 +116,9 @@ export const editProfile = async (c: Context) => {
 export const getProfile = async (c: Context) => {
   const user = c.get('user')
 
-  const profile = await DB.select()
-    .from(schema.users)
-    .where(eq(schema.users.id, user.id))
-    .limit(1)
-    .then(users => users[0])
+  const profile = await DB.user.findUnique({
+    where: { id: user.id },
+  })
 
   if (!profile) {
     return c.json(
@@ -163,25 +143,9 @@ export const deleteUser = async (c: Context) => {
   const id = c.req.param('id')
 
   try {
-    // Start a transaction for atomic operations
-    const tx = await DB.transaction(async trx => {
-      // First delete related sessions for the user
-      await trx.delete(schema.sessions).where(eq(schema.sessions.userId, id))
-
-      // Delete related accounts
-      await trx.delete(schema.accounts).where(eq(schema.accounts.userId, id))
-
-      // Then delete the user
-      const deletedUsers = await trx
-        .delete(schema.users)
-        .where(eq(schema.users.id, id))
-        .returning()
-
-      if (deletedUsers.length === 0) {
-        throw new Error('User not found')
-      }
-
-      return deletedUsers[0]
+    // Prisma handles cascading deletes if configured in schema
+    const deletedUser = await DB.user.delete({
+      where: { id },
     })
 
     return c.json({
@@ -193,17 +157,7 @@ export const deleteUser = async (c: Context) => {
     const errorMessage =
       error instanceof Error ? error.message : 'Unknown error'
 
-    if (errorMessage === 'User not found') {
-      return c.json(
-        {
-          success: false,
-          message: 'User not found',
-          error: 'No user found with the provided ID',
-        },
-        404
-      )
-    }
-
+    // Prisma error for not found usually throws
     return c.json(
       {
         success: false,
