@@ -1,0 +1,14 @@
+{
+    "name": "better-auth-postgres-starter",
+    "private": true,
+    "workspaces": [
+        "backend",
+        "frontend"
+    ],
+    "scripts": {
+        "dev:backend": "cd backend && bun dev",
+        "dev:frontend": "cd frontend && bun dev",
+        "dev": "bun run dev:backend & bun run dev:frontend",
+        "install:all": "bun install && cd backend && bun install && cd ../frontend && bun install"
+    }
+}

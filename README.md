@@ -1,54 +1,51 @@
-# Better API Monorepo
+# better-auth-postgres-starter
 
-A modern, high-performance monorepo using **Bun**, **Hono**, **Better Auth**, **Prisma**, and **React**.
+A premium, high-performance authentication boilerplate built with **Bun**, **Hono**, **Prisma**, and **Better Auth**. Optimized for developer experience and production-ready security.
 
-## Project Structure
+Developed with ❤️ by **Sai Akash Neela**.
 
-- `backend/`: The API server built with Hono and Bun.
-  - Authentication: [Better Auth](https://better-auth.com)
-  - ORM: [Prisma](https://prisma.io)
-  - Database: PostgreSQL
-- `frontend/`: The UI built with Vite, React, and TypeScript.
-  - Client: Better Auth React Client
+## 🚀 Features
 
-## Getting Started
+- **🛡️ Full Auth Suite**: Email/Password, Magic Link, and Social Logins (GitHub, Google).
+- **🐘 PostgreSQL Core**: Robust data persistence with Prisma ORM.
+- **⚡ Bun & Hono**: Blazing fast runtime and minimalist API framework.
+- **📧 Local Email Testing**: catch-all email capture with **Maildev**.
+- **📦 Optimized Responses**: Gzip compression and secure CORS enabled.
+- **🔍 Type Safety**: End-to-end TypeScript for robust development.
+- **🛡️ RBAC**: Built-in Admin/User roles and protected route middleware.
 
-### Prerequisites
+## 📁 Project Structure
 
-- [Bun](https://bun.sh) (v1.0.0 or newer)
-- [PostgreSQL](https://www.postgresql.org/download/)
+```bash
+├── backend/            # Hono API + Prisma + Better Auth
+└── frontend/           # Vite + React + Better Auth Client
+```
 
-### Backend Setup
+## 🛠️ Getting Started
 
-1. `cd backend`
-2. `bun install`
-3. Configure `.env` (use `.env.example` as a template)
-4. Update Prisma schema and generate client:
-   ```bash
-   bunx prisma generate
-   ```
-5. Run the dev server:
-   ```bash
-   bun dev
-   ```
+### 1. Environment Configuration
+Copy `.env.example` to `.env` in the `backend/` folder and fill in your PostgreSQL credentials and provider secrets.
 
-### Frontend Setup
+### 2. Database Setup
+```bash
+cd backend
+bun install
+bunx prisma db push
+```
 
-1. `cd frontend`
-2. `bun install`
-3. Run the dev server:
-   ```bash
-   bun dev
-   ```
+### 3. Start Development
+```bash
+# In backend/
+bun dev
 
-## Key Technologies
+# In frontend/
+bun dev
+```
 
-- **Bun**: Fast JavaScript runtime & package manager.
-- **Hono**: Ultrafast web framework.
-- **Better Auth**: Comprehensive authentication library.
-- **Prisma**: Type-safe ORM for PostgreSQL.
-- **Vite & React**: Modern frontend development.
+## 📬 Local Email Testing
+This boilerplate is configured to work with **Maildev** on port `1025`. All verification and magic link emails will be captured locally during development.
 
-## License
+---
 
-MIT
+## 👨‍💻 Credits
+Created and maintained by **Sai Akash Neela** ([@SaiAkashNeela](https://github.com/SaiAkashNeela)).

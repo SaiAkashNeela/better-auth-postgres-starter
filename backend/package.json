@@ -1,8 +1,8 @@
 {
-  "name": "better-api",
+  "name": "better-auth-postgres-starter",
   "version": "1.0.0",
   "description": "A high-performance API template using Bun, Hono, and Better Auth",
-  "author": "Mehedi <admin@promehedi.com>",
+  "author": "Sai Akash Neela <saiakashneela@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",

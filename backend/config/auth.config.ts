@@ -58,6 +58,7 @@ export const auth = betterAuth({
   emailVerification: {
     sendOnSignUp: true,
     autoSignInAfterVerification: true,
+    callbackURL: APP_URL,
     sendVerificationEmail: async ({ user, url, token }) => {
       console.log(`[AuthConfig] Triggering sendVerificationEmail for ${user.email}`)
       await sendEmail({
