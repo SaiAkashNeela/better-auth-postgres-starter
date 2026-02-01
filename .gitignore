@@ -1,0 +1,12 @@
+# deps
+node_modules/
+.DS_Store
+
+# env
+.env*
+!.env.example
+
+# build
+better-auth_migrations
+dist
+drizzle

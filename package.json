@@ -1,0 +1,44 @@
+{
+  "name": "better-api",
+  "version": "1.0.0",
+  "description": "A high-performance API template using Bun, Hono, and Better Auth",
+  "author": "Mehedi <admin@promehedi.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ProMehedi/better-api"
+  },
+  "scripts": {
+    "start": "NODE_ENV=production bun run server.ts",
+    "dev": "bun run --hot server.ts",
+    "format": "bunx prettier --write '**/*.{js,jsx,ts,tsx}'",
+    "format:check": "bunx prettier --check '**/*.{js,jsx,ts,tsx}'",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "axios": "^1.8.4",
+    "better-auth": "^1.2.7",
+    "dotenv": "^16.5.0",
+    "drizzle-orm": "^0.42.0",
+    "hono": "^4.7.7",
+    "pg": "^8.14.1"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/pg": "^8.11.13",
+    "drizzle-kit": "^0.31.0",
+    "tsx": "^4.19.3"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  },
+  "keywords": [
+    "bun",
+    "hono",
+    "better-auth",
+    "typescript",
+    "api",
+    "rest",
+    "template"
+  ]
+}
