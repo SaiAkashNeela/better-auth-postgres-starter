@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import '~/config/compress.config'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'

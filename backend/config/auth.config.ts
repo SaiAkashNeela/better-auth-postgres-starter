@@ -4,6 +4,7 @@ import { magicLink } from 'better-auth/plugins'
 import { DB } from '.'
 //
 import { BETTER_AUTH_URL, APP_URL, sendEmail } from '~/libs'
+import { getVerificationEmail, getMagicLinkEmail, getResetPasswordEmail } from '~/emails'
 
 export const auth = betterAuth({
   database: prismaAdapter(DB, {
@@ -43,33 +44,39 @@ export const auth = betterAuth({
   },
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: true, // Enabled as requested
-    emailVerification: {
-      sendOnSignUp: true,
-      autoSignInAfterVerification: true,
-      sendVerificationEmail: async ({ user, url, token }) => {
-        await sendEmail({
-          to: user.email,
-          subject: 'Verify your email',
-          text: `Click the link to verify your email address: ${url}`,
-        })
-      },
-    },
+    requireEmailVerification: true,
     sendResetPassword: async ({ user, url, token }) => {
+      console.log(`[AuthConfig] Triggering sendResetPassword for ${user.email}`)
       await sendEmail({
         to: user.email,
         subject: 'Reset your password',
-        text: `Click the link to reset your password: ${url}. If you didn't request this, ignore this email.`,
+        text: `Reset your password: ${url}`,
+        html: getResetPasswordEmail(url),
+      })
+    },
+  },
+  emailVerification: {
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    sendVerificationEmail: async ({ user, url, token }) => {
+      console.log(`[AuthConfig] Triggering sendVerificationEmail for ${user.email}`)
+      await sendEmail({
+        to: user.email,
+        subject: 'Verify your email',
+        text: `Verify your email: ${url}`,
+        html: getVerificationEmail(user.name, url),
       })
     },
   },
   plugins: [
     magicLink({
       sendMagicLink: async ({ email, url }) => {
+        console.log(`[AuthConfig] Triggering sendMagicLink for ${email}`)
         await sendEmail({
           to: email,
           subject: 'Sign in to your account',
-          text: `Click the link to sign in: ${url}`,
+          text: `Sign in: ${url}`,
+          html: getMagicLinkEmail(url),
         })
       },
     }),

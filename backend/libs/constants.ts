@@ -6,7 +6,7 @@ export const FROM_NAME = process.env.FROM_NAME
 // Better Auth
 export const APP_URL = process.env.APP_URL || 'http://localhost:3000'
 export const BETTER_AUTH_URL =
-  process.env.API_URL || 'http://localhost:8000/api/auth'
+  process.env.BETTER_AUTH_URL || 'http://localhost:8000/api/auth'
 
 // Database
 export const DATABASE_URL = process.env.DATABASE_URL
